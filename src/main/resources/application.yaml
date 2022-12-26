@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/task-db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgresPlusDialect
+      ddl-auto: create
+jwt:
+  token-prefix: 'Bearer '
+  secret-key: 'secret-key'
+  access-token:
+    expiration-time: 43200000 # 12 hours
+  refresh-token:
+    expiration-time: 86400000 # 24 hours
