@@ -6,9 +6,9 @@ import lombok.Getter;
 @Builder
 @Getter
 public class TaskReadDto {
-    private Long id;
-    private String title;
-    private String description;
-    private Integer importance;
-    private boolean done;
+    private final Long id;
+    private final String title;
+    private final String description;
+    private final Integer importance;
+    private final boolean done;
 }

@@ -14,7 +14,8 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/tasks")
+@CrossOrigin
+@RequestMapping("/api/tasks")
 @RequiredArgsConstructor
 public class TaskController {
 
@@ -35,7 +36,7 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<TaskReadDto> saveTask(@Valid @RequestBody TaskWriteDto taskWriteDto) {
         TaskReadDto savedTask = taskService.saveTask(taskWriteDto);
-        URI savedTaskURI = URI.create("/api/v1/tasks/" + savedTask.getId());
+        URI savedTaskURI = URI.create("/api/tasks/" + savedTask.getId());
         return ResponseEntity.created(savedTaskURI).body(savedTask);
     }
 
