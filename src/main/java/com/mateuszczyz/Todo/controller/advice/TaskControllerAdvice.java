@@ -5,6 +5,7 @@ import com.mateuszczyz.Todo.exception.ExceptionResponse;
 import com.mateuszczyz.Todo.exception.InvalidTaskFormatException;
 import com.mateuszczyz.Todo.exception.TaskNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,23 +29,18 @@ public class TaskControllerAdvice {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         ExceptionResponse responseBody = ExceptionResponse.builder()
                 .httpStatus(httpStatus.value())
-                .messages(List.of(exception.getMessage()))
+                .message(exception.getMessage())
                 .timestamp(LocalDateTime.now(clock))
                 .build();
         return new ResponseEntity<>(responseBody, httpStatus);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidTaskFormException(MethodArgumentNotValidException exception) {
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        List<String> errorMessages = fieldErrors.stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
-
+    public ResponseEntity<ExceptionResponse> handleInvalidTaskFormException() {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ExceptionResponse responseBody = ExceptionResponse.builder()
                 .httpStatus(httpStatus.value())
-                .messages(errorMessages)
+                .message("Provided task's data are not valid")
                 .timestamp(LocalDateTime.now(clock))
                 .build();
         return new ResponseEntity<>(responseBody, httpStatus);

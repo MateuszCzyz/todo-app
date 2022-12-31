@@ -2,9 +2,7 @@ package com.mateuszczyz.Todo.filter;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mateuszczyz.Todo.config.JwtConfig;
-import com.mateuszczyz.Todo.config.ObjectMapperConfig;
 import com.mateuszczyz.Todo.exception.ExceptionResponse;
 import com.mateuszczyz.Todo.model.User;
 import com.mateuszczyz.Todo.service.UserService;
@@ -15,18 +13,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -45,8 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String servletPath = request.getServletPath();
-        if(servletPath.equals("/api/auth/login") || servletPath.equals("/api/auth/register")) {
+        AntPathRequestMatcher requestMatcher = new AntPathRequestMatcher("/api/tasks/**");
+        if(!requestMatcher.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -58,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                     .httpStatus(httpStatus)
-                    .messages(List.of(errorMessage))
+                    .message(errorMessage)
                     .timestamp(LocalDateTime.now(clock))
                     .build();
 
@@ -89,7 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             ExceptionResponse exceptionResponse = ExceptionResponse.builder()
                     .httpStatus(httpStatus)
-                    .messages(List.of(errorMessage))
+                    .message(errorMessage)
                     .timestamp(LocalDateTime.now(clock))
                     .build();
 

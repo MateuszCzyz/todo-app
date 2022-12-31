@@ -3,18 +3,17 @@ package com.mateuszczyz.Todo.controller;
 import com.mateuszczyz.Todo.dto.LoginRequestDto;
 import com.mateuszczyz.Todo.dto.LoginResponseDto;
 import com.mateuszczyz.Todo.dto.RegisterRequestDto;
+import com.mateuszczyz.Todo.dto.RegisterResponseDto;
 import com.mateuszczyz.Todo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@CrossOrigin
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
@@ -27,9 +26,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@Valid @RequestBody RegisterRequestDto requestDto) {
-        userService.createUser(requestDto);
-        return ResponseEntity.ok("User created!");
+    public ResponseEntity<RegisterResponseDto> createUser(@Valid @RequestBody RegisterRequestDto requestDto) {
+        RegisterResponseDto responseDto = userService.createUser(requestDto);
+        return ResponseEntity.ok(responseDto);
     }
-
 }

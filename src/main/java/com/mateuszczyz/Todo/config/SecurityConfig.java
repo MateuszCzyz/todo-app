@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -30,9 +31,9 @@ public class SecurityConfig {
                     .sessionCreationPolicy(STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                    .requestMatchers("/api/auth/login").permitAll()
-                    .requestMatchers("/api/auth/register").permitAll()
-                    .anyRequest().authenticated()
+                    .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/tasks/**")).authenticated()
+                    .anyRequest().permitAll()
                 .and()
                 .httpBasic()
                 .and()

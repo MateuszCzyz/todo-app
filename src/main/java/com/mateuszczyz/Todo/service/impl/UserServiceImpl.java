@@ -3,6 +3,7 @@ package com.mateuszczyz.Todo.service.impl;
 import com.mateuszczyz.Todo.dto.LoginRequestDto;
 import com.mateuszczyz.Todo.dto.LoginResponseDto;
 import com.mateuszczyz.Todo.dto.RegisterRequestDto;
+import com.mateuszczyz.Todo.dto.RegisterResponseDto;
 import com.mateuszczyz.Todo.exception.UserAlreadyExistsException;
 import com.mateuszczyz.Todo.mapper.UserMapper;
 import com.mateuszczyz.Todo.model.User;
@@ -19,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final JwtUtils jwtUtils;
+    private final Clock clock;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -63,13 +67,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(RegisterRequestDto registerRequestDto) {
+    public RegisterResponseDto createUser(RegisterRequestDto registerRequestDto) {
         String email = registerRequestDto.getEmail();
         if (userRepository.existsByEmail(email)) {
             String errorMessage = format("User with email %s already exists", email);
             throw new UserAlreadyExistsException(errorMessage);
         }
+
         User toSave = userMapper.mapToUser(registerRequestDto);
         userRepository.save(toSave);
+
+        return RegisterResponseDto.builder()
+                .httpStatus(200)
+                .message("User has been created")
+                .timestamp(LocalDateTime.now(clock))
+                .build();
     }
 }
