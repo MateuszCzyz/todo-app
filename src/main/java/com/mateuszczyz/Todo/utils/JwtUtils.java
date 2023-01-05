@@ -23,24 +23,11 @@ public class JwtUtils {
         return decodedJWT.getSubject();
     }
 
-    public String generateAccessToken(String subject) {
-        return generateToken(
-                subject,
-                jwtConfig.getAccessTokenExpiration());
-    }
-
-    public String generateRefreshToken(String subject) {
-        return generateToken(
-                subject,
-                jwtConfig.getRefreshTokenExpiration());
-    }
-
-    private String generateToken(String subject, Long expirationTime) {
-        Date tokenExpiration = new Date(currentTimeMillis() + expirationTime);
+    public String generateToken(String subject) {
+        Date tokenExpiration = new Date(currentTimeMillis() + jwtConfig.getTokenExpiration());
         return JWT.create()
                 .withSubject(subject)
                 .withExpiresAt(tokenExpiration)
                 .sign(jwtConfig.getAlgorithm());
     }
-
 }

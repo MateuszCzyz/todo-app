@@ -1,4 +1,4 @@
-package com.mateuszczyz.Todo.exception;
+package com.mateuszczyz.Todo.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -6,11 +6,11 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-public class ExceptionResponse {
+@Builder
+public class RegisterResponseDto  {
     private final Integer httpStatus;
-    private final String message;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime timestamp;
+    private final String message;
 }

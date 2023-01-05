@@ -1,9 +1,12 @@
 package com.mateuszczyz.Todo.service.impl;
 
-import com.mateuszczyz.Todo.dto.LoginRequestDto;
-import com.mateuszczyz.Todo.dto.LoginResponseDto;
-import com.mateuszczyz.Todo.dto.RegisterRequestDto;
-import com.mateuszczyz.Todo.dto.RegisterResponseDto;
+import com.mateuszczyz.Todo.dto.request.LoginRequestDto;
+import com.mateuszczyz.Todo.dto.request.RegisterRequestDto;
+import com.mateuszczyz.Todo.dto.request.VerifyTokenRequestDto;
+import com.mateuszczyz.Todo.dto.response.LoginResponseDto;
+import com.mateuszczyz.Todo.dto.response.RegisterResponseDto;
+import com.mateuszczyz.Todo.dto.response.VerifyTokenResponseDto;
+import com.mateuszczyz.Todo.exception.TokenVerificationException;
 import com.mateuszczyz.Todo.exception.UserAlreadyExistsException;
 import com.mateuszczyz.Todo.mapper.UserMapper;
 import com.mateuszczyz.Todo.model.User;
@@ -11,6 +14,7 @@ import com.mateuszczyz.Todo.repository.UserRepository;
 import com.mateuszczyz.Todo.service.UserService;
 import com.mateuszczyz.Todo.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -55,10 +59,13 @@ public class UserServiceImpl implements UserService {
             authConfig.getAuthenticationManager().authenticate(authToken);
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-            String accessToken = jwtUtils.generateAccessToken(loginRequestDto.getEmail());
-            String refreshToken = jwtUtils.generateRefreshToken(loginRequestDto.getEmail());
+            String accessToken = jwtUtils.generateToken(loginRequestDto.getEmail());
 
-            return new LoginResponseDto(accessToken, refreshToken);
+            return LoginResponseDto.builder()
+                    .httpStatus(HttpStatus.OK.value())
+                    .timestamp(LocalDateTime.now(clock))
+                    .accessToken(accessToken)
+                    .build();
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Provided credentials are not valid");
         } catch (Exception e) {
@@ -70,8 +77,7 @@ public class UserServiceImpl implements UserService {
     public RegisterResponseDto createUser(RegisterRequestDto registerRequestDto) {
         String email = registerRequestDto.getEmail();
         if (userRepository.existsByEmail(email)) {
-            String errorMessage = format("User with email %s already exists", email);
-            throw new UserAlreadyExistsException(errorMessage);
+            throw new UserAlreadyExistsException("User with this email already exists");
         }
 
         User toSave = userMapper.mapToUser(registerRequestDto);
@@ -80,6 +86,25 @@ public class UserServiceImpl implements UserService {
         return RegisterResponseDto.builder()
                 .httpStatus(200)
                 .message("User has been created")
+                .timestamp(LocalDateTime.now(clock))
+                .build();
+    }
+
+    @Override
+    public VerifyTokenResponseDto verifyAuthToken(VerifyTokenRequestDto tokenRequestDto) {
+        String jwtSubject;
+        try {
+            jwtSubject = jwtUtils.verifyToken(tokenRequestDto.getToken());
+        } catch (Exception e) {
+            throw new TokenVerificationException("Token is not valid");
+        }
+
+        if(!userRepository.existsByEmail(jwtSubject)) {
+            throw new TokenVerificationException("Token is not valid");
+        }
+        return VerifyTokenResponseDto.builder()
+                .httpStatus(HttpStatus.OK.value())
+                .tokenIsValid(true)
                 .timestamp(LocalDateTime.now(clock))
                 .build();
     }

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -38,6 +39,15 @@ public class TaskController {
         TaskReadDto savedTask = taskService.saveTask(taskWriteDto);
         URI savedTaskURI = URI.create("/api/tasks/" + savedTask.getId());
         return ResponseEntity.created(savedTaskURI).body(savedTask);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        boolean taskDeleted = taskService.deleteTask(id);
+        if(taskDeleted) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // toggle task status whether is done or not

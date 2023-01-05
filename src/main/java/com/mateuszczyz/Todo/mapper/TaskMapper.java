@@ -13,6 +13,7 @@ public class TaskMapper {
                 .title(taskWriteDto.getTitle())
                 .description(taskWriteDto.getDescription())
                 .importance(taskWriteDto.getImportance())
+                .deadline(taskWriteDto.getDeadline())
                 .done(false)
                 .build();
     }
@@ -23,6 +24,7 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .importance(task.getImportance())
+                .deadline(task.getDeadline())
                 .done(task.isDone())
                 .build();
     }

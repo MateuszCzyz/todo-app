@@ -19,14 +19,11 @@ public class JwtConfig {
     @Value("${jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.token-prefix}")
+    @Value("${jwt.token.prefix}")
     private String tokenPrefix;
 
-    @Value("${jwt.access-token.expiration-time}")
-    private Long accessTokenExpiration;
-
-    @Value("${jwt.refresh-token.expiration-time}")
-    private Long refreshTokenExpiration;
+    @Value("${jwt.token.expiration-time}")
+    private Long tokenExpiration;
 
     public Algorithm getAlgorithm() {
         return Algorithm.HMAC384(secretKey);

@@ -13,5 +13,7 @@ public interface TaskService {
 
     TaskReadDto saveTask(TaskWriteDto taskWriteDto);
 
+    boolean deleteTask(Long id);
+
     TaskReadDto toggleTaskStatus(Long id);
 }

@@ -1,7 +1,9 @@
 package com.mateuszczyz.Todo.controller.advice;
 
 import com.mateuszczyz.Todo.controller.AuthenticationController;
+import com.mateuszczyz.Todo.dto.response.VerifyTokenResponseDto;
 import com.mateuszczyz.Todo.exception.ExceptionResponse;
+import com.mateuszczyz.Todo.exception.TokenVerificationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +41,15 @@ public class AuthenticationControllerAdvice {
                 .timestamp(LocalDateTime.now(clock))
                 .build();
         return new ResponseEntity<>(responseBody, httpStatus);
+    }
+
+    @ExceptionHandler ResponseEntity<VerifyTokenResponseDto> handleTokenVerificationException(
+            TokenVerificationException exception) {
+        VerifyTokenResponseDto responseDto = VerifyTokenResponseDto.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST.value())
+                .tokenIsValid(false)
+                .timestamp(LocalDateTime.now(clock))
+                .build();
+        return ResponseEntity.badRequest().body(responseDto);
     }
 }

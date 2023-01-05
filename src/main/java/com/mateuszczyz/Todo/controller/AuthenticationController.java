@@ -1,9 +1,11 @@
 package com.mateuszczyz.Todo.controller;
 
-import com.mateuszczyz.Todo.dto.LoginRequestDto;
-import com.mateuszczyz.Todo.dto.LoginResponseDto;
-import com.mateuszczyz.Todo.dto.RegisterRequestDto;
-import com.mateuszczyz.Todo.dto.RegisterResponseDto;
+import com.mateuszczyz.Todo.dto.request.LoginRequestDto;
+import com.mateuszczyz.Todo.dto.request.RegisterRequestDto;
+import com.mateuszczyz.Todo.dto.request.VerifyTokenRequestDto;
+import com.mateuszczyz.Todo.dto.response.LoginResponseDto;
+import com.mateuszczyz.Todo.dto.response.RegisterResponseDto;
+import com.mateuszczyz.Todo.dto.response.VerifyTokenResponseDto;
 import com.mateuszczyz.Todo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,11 @@ public class AuthenticationController {
     public ResponseEntity<RegisterResponseDto> createUser(@Valid @RequestBody RegisterRequestDto requestDto) {
         RegisterResponseDto responseDto = userService.createUser(requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/verify-auth-token")
+    public ResponseEntity<VerifyTokenResponseDto> verifyAuthToken(@RequestBody VerifyTokenRequestDto requestDto) {
+        VerifyTokenResponseDto verifyTokenResponseDto = userService.verifyAuthToken(requestDto);
+        return ResponseEntity.ok(verifyTokenResponseDto);
     }
 }

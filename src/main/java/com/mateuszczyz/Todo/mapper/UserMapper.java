@@ -1,6 +1,6 @@
 package com.mateuszczyz.Todo.mapper;
 
-import com.mateuszczyz.Todo.dto.RegisterRequestDto;
+import com.mateuszczyz.Todo.dto.request.RegisterRequestDto;
 import com.mateuszczyz.Todo.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

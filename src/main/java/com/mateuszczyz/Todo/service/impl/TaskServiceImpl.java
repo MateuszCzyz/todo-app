@@ -7,7 +7,6 @@ import com.mateuszczyz.Todo.mapper.TaskMapper;
 import com.mateuszczyz.Todo.model.Task;
 import com.mateuszczyz.Todo.repository.TaskRepository;
 import com.mateuszczyz.Todo.service.TaskService;
-import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +30,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskReadDto getTaskById(Long id) {
-        Task task = taskRepository.findById(id).orElseThrow(() ->
-                new TaskNotFoundException(id));
+        Task task = taskRepository.findById(id).orElseThrow(() -> {
+            String message = String.format("Task with %s not found", id);
+            return new TaskNotFoundException(message);
+        });
         return taskMapper.mapToDto(task);
     }
 
@@ -44,10 +45,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public boolean deleteTask(Long id) {
+        if(taskRepository.findById(id).isEmpty()) {
+            return false;
+        }
+        taskRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
     @Transactional
     public TaskReadDto toggleTaskStatus(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
+        Task task = taskRepository.findById(id).orElseThrow(() -> {
+            String message = String.format("Task with %s not found", id);
+            return new TaskNotFoundException(message);
+        });
         task.setDone(!task.isDone());
         return taskMapper.mapToDto(task);
     }
