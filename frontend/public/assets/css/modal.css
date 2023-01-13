@@ -1,0 +1,125 @@
+#shadow {
+  width: 100%;
+  height: 100%;
+  opacity: 0.61;
+  background-color: #3c4249;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-task-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 100px auto;
+  z-index: 100;
+  width: 450px;
+  height: auto;
+  max-height: 650px;
+  background-color: #3c4249;
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding-bottom: 30px;
+}
+
+#add-task-menu-navbar {
+  width: 100%;
+  color: #949494;
+  height: 40px;
+  font-size: 15px;
+  display: flex;
+  border-bottom: 0.5px solid #363c43;
+  text-decoration: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+
+input[type="date"] {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input[type="date"]:hover {
+  cursor: pointer;
+}
+
+#add-task-menu-navbar img {
+  width: 20px;
+  height: 20px;
+}
+
+#add-task-menu-navbar img:hover {
+  cursor: pointer;
+}
+
+#add-task-menu form {
+  width: 70%;
+  margin-top: 30px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.add-task-input {
+  background-color: #363c43c7;
+  border: 1px solid #343739;
+  border-radius: 5px;
+  height: 35px;
+  margin: 10px 0;
+  width: 100%;
+  outline: none;
+  color: #949494;
+  font-size: 13px;
+  padding: 0 5px;
+}
+
+#save-task-button {
+  width: 103%;
+  background-color: #149b86;
+  border: 1px solid #159581;
+  border-radius: 5px;
+  color: #fff;
+  margin-top: 30px;
+  height: 35px;
+  transition: all 0.5s;
+  font-size: 15px;
+}
+
+#save-task-button:hover {
+  cursor: pointer;
+  background-color: #048a75;
+  transition: all 0.5s;
+}
+
+.add-task-input-label {
+  color: #fff;
+  font-size: 15px;
+  margin: 15px 0 5px 0;
+}
+
+.add-task-input-label:nth-of-type(1) {
+  margin-top: 5px;
+}
+
+.textarea-input {
+  width: 100%;
+  padding: 10px 5px;
+  min-height: 80px;
+  resize: none;
+}
