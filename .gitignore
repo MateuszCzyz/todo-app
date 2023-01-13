@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### React.js Frontend ###
+
+frontend/node_modules/
+frontend/build/
+frontend/package-lock.json
+frontend/.env
+frontend/.cache/
