@@ -3,13 +3,19 @@ import AuthService from "../services/authentication/AuthService.js";
 import TaskService from "../services/tasks/TaskService.js";
 import ModalPanel from "../components/ModalPanel";
 import { Navigate } from "react-router-dom";
-import TaskComponent from "../components/TaskComponent.js";
+import PeriodNavbar from "./PeriodNavbar.js";
+import SelectedPeriodPanel from "./SelectedPeriodPanel.js";
+import TaskList from "./TaskList.js";
+import DisplayModalButton from "./DisplayModalButton.js";
+import Periods from "../utils/dates/Periods";
 
 class App extends Component {
   state = {
     loading: true,
     authenticated: false,
     showModalPanel: false,
+    selectedPeriod: Periods.DAY,
+    periodOffset: 0,
     tasks: [],
   };
 
@@ -22,6 +28,8 @@ class App extends Component {
       this.setState({ loading: false, authenticated: true, tasks: tasks });
     }
   }
+
+  // methods to manage a modal menu
 
   displayModal() {
     this.setState({
@@ -39,14 +47,33 @@ class App extends Component {
     this.setState({ tasks: [...this.state.tasks, task] });
   }
 
+  changeSelectedPeriod(period) {
+    this.setState({ selectedPeriod: period });
+  }
+
+  // methods to manage an offset state
+
+  increasePeriodOffset() {
+    this.setState({ periodOffset: ++this.state.periodOffset });
+  }
+
+  decreasePeriodOffset() {
+    this.setState({ periodOffset: --this.state.periodOffset });
+  }
+
+  resetPeriodOffset() {
+    this.setState({ periodOffset: 0 });
+  }
+
+  // build component
+
   render() {
     if (!this.state.authenticated && !this.state.loading) {
       return <Navigate to="/login" />;
     }
 
-    if (this.state.loading) {
-      return <p>Loading...</p>;
-    }
+    this.state.loading && <p>Loading...</p>;
+
     return (
       <>
         {this.state.showModalPanel && (
@@ -57,46 +84,24 @@ class App extends Component {
         )}
         <div id="app-root">
           <div id="container">
-            <div id="period-navbar">
-              <div id="smaller-period-box">
-                <div class="period-button selected-period-button">
-                  <div class="hidden-flex-div"></div>
-                  <p>Day</p>
-                  <div class="bottom-period-border"></div>
-                </div>
-                <div class="period-button">
-                  <div class="hidden-flex-div"></div>
-                  <p>Week</p>
-                  <div class="bottom-period-border"></div>
-                </div>
-                <div class="period-button">
-                  <div class="hidden-flex-div"></div>
-                  <p>Month</p>
-                  <div class="bottom-period-border"></div>
-                </div>
-                <div class="period-button">
-                  <div class="hidden-flex-div"></div>
-                  <p>Year</p>
-                  <div class="bottom-period-border"></div>
-                </div>
-              </div>
-            </div>
-            <div id="selected-day-box">
-              <div id="selected-day-menu">
-                <img src="/assets/images/arrow.png" alt="left arrow" />
-                <h2>Thursday</h2>
-                <img src="/assets/images/arrow.png" alt="right arrow" />
-              </div>
-              <p>March 23, 2022</p>
-            </div>
-            <button id="add-task-button" onClick={() => this.displayModal()}>
-              + add task
-            </button>
-            <div id="task-list">
-              {this.state.tasks.map((task) => (
-                <TaskComponent key={task.id} task={task} />
-              ))}
-            </div>
+            <PeriodNavbar
+              changeSelectedPeriod={(period) =>
+                this.changeSelectedPeriod(period)
+              }
+              resetOffset={() => this.resetPeriodOffset()}
+            />
+            <SelectedPeriodPanel
+              selectedPeriod={this.state.selectedPeriod}
+              periodOffset={this.state.periodOffset}
+              increasePeriodOffset={() => this.increasePeriodOffset()}
+              decreasePeriodOffset={() => this.decreasePeriodOffset()}
+            />
+            <DisplayModalButton onClick={() => this.displayModal()} />
+            <TaskList
+              tasks={this.state.tasks}
+              selectedPeriod={this.state.selectedPeriod}
+              offset={this.state.periodOffset}
+            />
           </div>
         </div>
       </>

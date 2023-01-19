@@ -2,7 +2,6 @@ import { Component } from "react";
 import { Link, Navigate } from "react-router-dom";
 import AuthService from "../services/authentication/AuthService";
 import AuthValidator from "../utils/validators/AuthValidator";
-import App from "./App";
 
 class Login extends Component {
   state = {
@@ -96,23 +95,25 @@ class Login extends Component {
             await this.handleSubmit(event);
           }}
         >
-          <div class="input-section">
+          <div className="input-section">
             <span>E-mail:</span>
-            <input type="text" name="email" class="auth-input" />
+            <input type="text" name="email" className="auth-input" />
             {this.state.email.hasError && (
-              <p class="error-message">{this.state.email.errorMessage}</p>
+              <p className="error-message">{this.state.email.errorMessage}</p>
             )}
           </div>
-          <div class="input-section">
+          <div className="input-section">
             <span>Password:</span>
-            <input type="password" name="password" class="auth-input" />
+            <input type="password" name="password" className="auth-input" />
             {this.state.password.hasError && (
-              <p class="error-message">{this.state.password.errorMessage}</p>
+              <p className="error-message">
+                {this.state.password.errorMessage}
+              </p>
             )}
           </div>
-          <div class="input-section">
+          <div className="input-section">
             {this.state.form.hasError && (
-              <p class="error-message form-error-message">
+              <p className="error-message form-error-message">
                 {this.state.form.errorMessage}
               </p>
             )}

@@ -117,32 +117,38 @@ class Register extends Component {
           }}
           autoComplete="off"
         >
-          <div class="input-section">
+          <div className="input-section">
             <span>E-mail:</span>
-            <input type="text" name="email" class="auth-input" />
+            <input type="text" name="email" className="auth-input" />
             {this.state.email.hasError && (
-              <p class="error-message">{this.state.email.errorMessage}</p>
+              <p className="error-message">{this.state.email.errorMessage}</p>
             )}
           </div>
-          <div class="input-section">
+          <div className="input-section">
             <span>Password:</span>
-            <input type="password" name="password" class="auth-input" />
+            <input type="password" name="password" className="auth-input" />
             {this.state.password.hasError && (
-              <p class="error-message">{this.state.password.errorMessage}</p>
+              <p className="error-message">
+                {this.state.password.errorMessage}
+              </p>
             )}
           </div>
-          <div class="input-section">
+          <div className="input-section">
             <span>Confirm password:</span>
-            <input type="password" name="confirmPassword" class="auth-input" />
+            <input
+              type="password"
+              name="confirmPassword"
+              className="auth-input"
+            />
             {this.state.confirmPassword.hasError && (
-              <p class="error-message">
+              <p className="error-message">
                 {this.state.confirmPassword.errorMessage}
               </p>
             )}
           </div>
-          <div class="input-section">
+          <div className="input-section">
             {this.state.form.hasError && (
-              <p class="error-message form-error-message">
+              <p className="error-message form-error-message">
                 {this.state.form.errorMessage}
               </p>
             )}

@@ -88,38 +88,38 @@ html {
   padding: 0;
 }
 
-#selected-day-box {
+#selected-period-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
 }
-#selected-day-box #selected-day-menu {
+#selected-period-panel #selected-period-menu {
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
   height: 50px;
 }
-#selected-day-box #selected-day-menu img {
+#selected-period-panel #selected-period-menu img {
   width: 12px;
   height: 12px;
   padding: 5px;
 }
-#selected-day-box #selected-day-menu img:first-of-type {
+#selected-period-panel #selected-period-menu img:first-of-type {
   transform: rotate(180deg);
 }
-#selected-day-box #selected-day-menu img:hover {
+#selected-period-panel #selected-period-menu img:hover {
   cursor: pointer;
 }
-#selected-day-box #selected-day-menu h2 {
+#selected-period-panel #selected-period-menu h2 {
   font-size: 35px;
   color: #fff;
   margin: 0 15px;
   font-weight: 100;
 }
-#selected-day-box p {
+#selected-period-panel p {
   margin: 5px 0;
   padding: 0;
   color: #949494;
