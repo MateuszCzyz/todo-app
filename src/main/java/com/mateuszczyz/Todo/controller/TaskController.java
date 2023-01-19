@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@CrossOrigin
+@CrossOrigin(originPatterns = "*", exposedHeaders = "**")
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
 public class TaskController {
