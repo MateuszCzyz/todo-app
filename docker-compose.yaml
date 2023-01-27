@@ -1,12 +1,26 @@
 services:
-  postgres:
-    image: postgres
-    container_name: postgres-db
-    ports:
-      - 5430:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: task-db
-    volumes:
-      - /data/postgres
+    postgres:
+        image: postgres
+        container_name: postgres-db
+        ports:
+            - 5430:5432
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: task-db
+        volumes:
+            - /data/postgres
+        networks:
+            - todo-network
+    todo-app:
+        image: todo-app
+        container_name: todo-app
+        ports:
+            - 8080:8080
+        depends_on:
+            - postgres
+        networks:
+            - todo-network
+networks:
+    todo-network:
+        driver: bridge
